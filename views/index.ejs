@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Management</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <!-- <a onclick="greenToast('hello','green')" class="btn">Toast!</a> -->
+        <div class="row">
+            <div class="col-2" id="adduserbtn">
+                <button class="btn" type="button" data-toggle="collapse" data-target="#userFormCollapse"
+                    aria-expanded="false" aria-controls="userFormCollapse">
+                    Add User
+                </button>
+            </div>
+            <!-- <div class="col-6">
+                <button class="btn btn-success m-0" type="button" data-toggle="collapse"
+                    data-target="#searchFormCollapse" aria-expanded="false" aria-controls="userFormCollapse">
+                    Search
+                </button>
+            </div> -->
+            <div class="col-6">
+                <form id="searchForm">
+                    <input type="text" id="searchInput" placeholder="Search by ID, Name, Phone, or Email" />
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapse" id="userFormCollapse">
+        <div class="card card-body" id="userFormDiv">
+            <h2>User Registration Form</h2>
+            <form id="userForm" enctype="multipart/form-data" class="form-horizontal">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" /><br /><br />
+
+                <label for="userProfile">User Profile:</label>
+                <input class="custom-file" type="file" id="userProfile" name="userProfile" /><br /><br />
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" /><br /><br />
+
+                <label for="phone">Phone:</label>
+                <input type="text" id="phone" name="phone" /><br /><br />
+
+                <input type="hidden" id="userId" name="userId" />
+
+                <button type="submit" class="btn">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="collapse" id="searchFormCollapse">
+        <div class="card card-body">
+            <form id="searchForm">
+                <input type="text" id="searchInput" placeholder="Search by ID, Name, Phone, or Email" />
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editUserForm" enctype="multipart/form-data">
+                        <input type="hidden" id="editUserId" name="userId" />
+                        <label for="editUsername">Username:</label>
+                        <input type="text" id="editUsername" name="username" /><br /><br />
+
+                        <label for="editUserProfile">User Profile:</label>
+                        <input class="p-0" style="border: none; outline: none; background-color: #a1d6e2;" type="text" id="profile" name="profile" readonly />
+                        <input class="custom-file" type="file" id="editUserProfile" name="userProfile" /><br /><br />
+
+                        <label for="editEmail">Email:</label>
+                        <input type="email" id="editEmail" name="email" /><br /><br />
+
+                        <label for="editPhone">Phone:</label>
+                        <input type="text" id="editPhone" name="phone" /><br /><br />
+
+                        <button type="submit">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2>Users List</h2>
+
+    <table border="1" id="usersTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User Profile</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+          
+    </table>
+
+    <div class="pagination">
+      
+      </div>
+      
+
+    <script src="/js/index.js"></script>
+    <script>
+        function toast(data, color = "rounded") {
+            let toastHTML = `
+    <div class="toast-content">
+        <span>${data}</span>
+        <span class="toast-dismiss" onclick="dismissToast()">X</span>
+    </div>
+    <div class="toast-progress"></div>
+    `;
+            let toastElement = M.toast({
+                html: toastHTML,
+                displayLength: 3000,
+                classes: color,
+            });
+        }
+
+        function dismissToast() {
+            let toasts = document.querySelectorAll(".toast");
+            toasts.forEach((toast) => toast.remove());
+        }
+
+        function greenToast(message) {
+            toast(message, "green-toast");
+        }
+    </script>
+</body>
+
+</html>
+<!-- <h2>User Registration Form</h2>
+<form id="userForm" enctype="multipart/form-data" class="form-horizontal">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br><br>
+
+    <label for="userProfile">User Profile:</label>
+    <input class="custom-file" type="file" id="userProfile" name="userProfile" required><br><br>
+    <img id="profilePreviews" src="" alt=" " style="width: 100px; height: 100px;"><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br><br>
+
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" name="phone" required><br><br>
+
+    <input type="hidden" id="userId" name="userId">
+
+    <button type="submit">Submit</button>
+</form>
+-->
+
+<!-- <
+<tbody>
+    <%# if (users.length > 0) { %>
+        <%# users.forEach(function(user, index) { %>
+            <tr>
+                <td><%#= (currentPage - 1) * limit + index + 1 %></td>
+                <td>
+                    <%# console.log(users); if (user.userProfile) { %>
+                        <img src="/uploads/<%#= user.userProfile %>" alt="User Profile" height="80" width="80" style="border-radius: 50%;">
+                    <%# } else { %>
+                        N/A
+                    <%# } %>
+                </td>
+                <td><%#= user.username %></td>
+                <td><%#= user.email %></td>
+                <td><%#= user.phone %></td>
+                <td>
+                    <button class="btn btn-warning btn-sm" onclick="editUser('<%#= user._id %>')">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteUser('<%#= user._id %>')">Delete</button>
+                </td>
+            </tr>
+        <%# }); %>
+    <%# } else { %>
+        <tr>
+            <td colspan="6" class="text-center">No users found.</td>
+        </tr>
+    <%# } %>
+</tbody>
+  
+</table>
+
+<div class="pagination">
+<%# for(let i = 1; i <= totalPages; i++) { %>
+    <li class="page-item <%#= currentPage === i ? 'active' : '' %>">
+        <a class="page-link" href="/getUsers?search=<%#= search %>&page=<%#= i %>&limit=<%#= limit %>"><%#= i %></a>
+    </li>
+<%# } %>
+
+</div> > -->
